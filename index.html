@@ -29,9 +29,63 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
 
+
+    <script type="text/javascript">
+        function showRecaptcha(element) {
+            Recaptcha.create("MyPublicKey", element, {
+                theme: "red",
+                callback: Recaptcha.focus_response_field});
+        }
+        $(document).ready(function(){
+            showRecaptcha('recaptcha_div');
+
+            $("#form").submit(function(ev){
+                ev.preventDefault();
+                if (!$(this).valid()) return;
+                $.ajax({
+                    type: "post",
+                    url: "/send",
+                    data: $('#form').serialize(),
+                    dataType: "json",
+                    success: function(response) {
+                        if(response.message === "success") {
+                            $.ajax({
+                                type: "post",
+                                url: "/send_email",
+                                data: $('#form').serialize(),
+                                dataType: "json",
+                                success: function(response) {
+                                    $('#form').html("<div id='message'></div>");
+                                    if(response.message === "success") {
+                                        $('#message').html("<h2>Message successfully sent.</h2>").hide().fadeIn(1500);
+                                    } else {
+                                        $('#message').html("<h2>Error sending the message</h2>").hide().fadeIn(1500);
+                                    }
+                                },
+                                error: function(xhr, ajaxOptions, thrownError){
+                                    $('#form').html("<div id='message'></div>");
+                                    $('#message').html("<h2>Error sending the message</h2>").hide().fadeIn(1500);
+                                }
+                            });
+                        } else {
+                            showRecaptcha('recaptcha_div');
+                            $('#notice').html("Captcha failed!").hide().fadeIn(1500);
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError){
+                        $('#form').html("<div id='message'></div>");
+                        $('#message').html("<h2>Error sending the message</h2>").hide().fadeIn(1500);
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
     <script>
         function showRecaptcha(element) {
-            Recaptcha.create('6LcJPv0SAAAAAEUb9l2b5szHAQNqznY_xMT_Hisd', element, {
+            Recaptcha.create('', element, {
                 theme: 'custom', // you can pick another at https://developers.google.com/recaptcha/docs/customization
                 custom_theme_widget: 'recaptcha_widget'
             });
@@ -77,7 +131,46 @@
                 });
             }
         }
+        $(document).ready(function(){
+            var contactFormHost = 'https://smartmuseum-send-mail.herokuapp.com/',
+                    form = $('#contact-form'),
+                    notice = form.find('#notice');
 
+            if (form.length) {
+                showRecaptcha('recaptcha_widget');
+
+                form.submit(function(ev){
+                    ev.preventDefault();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: contactFormHost + 'send_email',
+                        data: form.serialize(),
+                        dataType: 'json',
+                        success: function(response) {
+                            switch (response.message) {
+                                case 'success':
+                                    form.fadeOut(function() {
+                                        form.html('<h4>' + form.data('success') + '</h4>').fadeIn();
+                                    });
+                                    break;
+
+                                case 'failure_captcha':
+                                    showRecaptcha('recaptcha_widget');
+                                    notice.text(notice.data('captcha-failed')).fadeIn();
+                                    break;
+
+                                case 'failure_email':
+                                    notice.text(notice.data('error')).fadeIn();
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            notice.text(notice.data('error')).fadeIn();
+                        }
+                    });
+                });
+            }
+        })
 
     </script>
     <![endif]-->
