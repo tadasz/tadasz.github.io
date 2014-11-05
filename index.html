@@ -342,6 +342,26 @@
                 </div><br/>
                 <div id="notice" class="notice" data-captcha-failed="Incorrect captcha!" data-error="There was an error sending the message, please try again."></div>
                 <button type="submit">Send</button>
+
+
+                <!-- ... your form code here ... -->
+
+                <script type="text/javascript"
+                        src="http://www.google.com/recaptcha/api/challenge?k=your_public_key">
+                </script>
+                <noscript>
+                    <iframe src="http://www.google.com/recaptcha/api/noscript?k=your_public_key"
+                            height="300" width="500" frameborder="0"></iframe><br>
+                    <textarea name="recaptcha_challenge_field" rows="3" cols="40">
+                    </textarea>
+                    <input type="hidden" name="recaptcha_response_field"
+                           value="manual_challenge">
+                </noscript>
+
+                <!-- ... more of your form code here ... -->
+
+
+
             </form>
 
             <script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
