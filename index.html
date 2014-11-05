@@ -29,14 +29,14 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <script>
         function showRecaptcha(element) {
-            Recaptcha.create('YOUR_PUBLIC_KEY_FROM_RECAPTCHA', element, {
+            Recaptcha.create('6LcJPv0SAAAAAEUb9l2b5szHAQNqznY_xMT_Hisd', element, {
                 theme: 'custom', // you can pick another at https://developers.google.com/recaptcha/docs/customization
                 custom_theme_widget: 'recaptcha_widget'
             });
         }
 
         function setupRecaptcha() {
-            var contactFormHost = 'YOUR_BACKEND_ADDRESS_FROM_HEROKU',
+            var contactFormHost = 'https://smartmuseum-send-mail.herokuapp.com/',
                     form = $('#contact-form'),
                     notice = form.find('#notice');
 
