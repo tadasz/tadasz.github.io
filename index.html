@@ -209,7 +209,10 @@
             </div>
         </div>
      <!---->
-        <!--<div class="row">-->
+        <div class="row">
+
+
+
             <!--<form id="contact-form" class="contact-form" method="post" data-success="Message successfully sent!">-->
 
                 <!--<div class="row control-group">-->
@@ -254,7 +257,7 @@
                 <!--</div>-->
 
                 <!--<div class="row control-group">-->
-                    <!--&lt;!&ndash;<label for="recaptcha_response_field">Captcha</label>&ndash;&gt;-->
+                    <!--<!--<label for="recaptcha_response_field">Captcha</label>-->-->
                     <!--<h3>Captcha</h3>-->
                     <!--<div id="recaptcha_widget" class="recaptcha">-->
                         <!--<div class="image">-->
@@ -284,8 +287,17 @@
 
         <form id="contact-form" class="contact-form" method="post" data-success="Message successfully sent!">
 
-            <label for="name">Name</label>
-            <input id="name" type="text" name="name" class="field" required autofocus /><br/>
+            <!--<label for="name">Name</label>-->
+            <!--<input id="name" type="text" name="name" class="field" required autofocus /><br/>-->
+
+            <div class="row control-group">
+                <div class="form-group col-xs-12 floating-label-form-group controls">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" placeholder="Name" id="name" required data-validation-required-message="Please enter your name.">
+                    <p class="help-block text-danger"></p>
+                </div>
+            </div>
+
 
             <label for="email">E-mail</label>
             <input id="email" type="email" name="email" class="field" required /><br/>
